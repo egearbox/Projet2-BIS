@@ -2,44 +2,44 @@ const Voting = artifacts.require("./Voting.sol");
 const { BN, expectRevert, expectEvent } = require("@openzeppelin/test-helpers");
 const { expect } = require("chai");
 
-contract("Voting", (accounts) => {
+contract("\n /********************** Test de Voting.sol **********************/\n", (accounts) => {
   const owner = accounts[0];
-  const firstVoter = accounts[1];
-  const secondVoter = accounts[2];
-  const thirdVoter = accounts[3];
-  const userNonVoter = accounts[4];
+  const Voter1 = accounts[1];
+  const Voter2 = accounts[2];
+  const Voter3 = accounts[3];
+  const nonVoter = accounts[4];
 
   let VotingInstance;
 
-  describe("addVoter function", function () {
+  describe("\n /**********/\n Test de addVoter function\n /**********/\n", function () {
     beforeEach(async function () {
       VotingInstance = await Voting.new({ from: owner });
       await VotingInstance.addVoter(owner, { from: owner });
     });
 
-    it("the owner can register a voter", async () => {
-      await VotingInstance.addVoter(firstVoter, { from: owner });
-      const voter = await VotingInstance.getVoter(firstVoter);
+    it("the owner can register a voter \n          CONGRAT SUCCESS in =====>", async () => {
+      await VotingInstance.addVoter(Voter1, { from: owner });
+      const voter = await VotingInstance.getVoter(Voter1);
       expect(voter.isRegistered).to.equal(true);
     });
 
     // REVERT
-    it("revert when caller is not the owner", async () => {
+    it("revert when caller is not the owner \n          CONGRAT SUCCESS in =====>", async () => {
       await expectRevert(
-        VotingInstance.addVoter(secondVoter, { from: firstVoter }),
+        VotingInstance.addVoter(Voter2, { from: Voter1 }),
         "Ownable: caller is not the owner"
       );
     });
 
-    it("revert when voters registration is not open", async () => {
+    it("revert when voters registration is not open \n          CONGRAT SUCCESS in =====>", async () => {
       await VotingInstance.startProposalsRegistering();
       await expectRevert(
-        VotingInstance.addVoter(firstVoter, { from: owner }),
+        VotingInstance.addVoter(Voter1, { from: owner }),
         "Voters registration is not open yet"
       );
     });
 
-    it("revert when voter is already registered", async () => {
+    it("revert when voter is already registered \n          CONGRAT SUCCESS in =====>", async () => {
       await expectRevert(
         VotingInstance.addVoter(owner, { from: owner }),
         "Already registered"
@@ -47,28 +47,28 @@ contract("Voting", (accounts) => {
     });
 
     // EVENT
-    it("emit a VoterRegistered event", async () => {
+    it("emit a VoterRegistered event \n          CONGRAT SUCCESS in =====>", async () => {
       expectEvent(
-        await VotingInstance.addVoter(firstVoter, {
+        await VotingInstance.addVoter(Voter1, {
           from: owner,
         }),
         "VoterRegistered",
-        { voterAddress: firstVoter }
+        { voterAddress: Voter1 }
       );
     });
 
-    describe("getVoter function", function () {
+    describe("\n /**********/\n Test de getVoter function\n /**********/\n", function () {
       it("revert when caller is not a voter", async () => {
         await expectRevert(
           VotingInstance.getVoter(owner, {
-            from: userNonVoter,
+            from: nonVoter,
           }),
           "You're not a voter"
         );
       });
     });
 
-    describe("startProposalsRegistering function", function () {
+    describe("\n /**********/\nTest de  startProposalsRegistering function\n /**********/\n", function () {
       it("change workflowStatus to ProposalsRegistrationStarted", async function () {
         await VotingInstance.startProposalsRegistering({ from: owner });
         const workflowStatus = await VotingInstance.workflowStatus.call();
@@ -84,7 +84,7 @@ contract("Voting", (accounts) => {
       // REVERT
       it("revert when caller is not the owner", async () => {
         await expectRevert(
-          VotingInstance.startProposalsRegistering({ from: firstVoter }),
+          VotingInstance.startProposalsRegistering({ from: Voter1 }),
           "Ownable: caller is not the owner"
         );
       });
@@ -109,17 +109,17 @@ contract("Voting", (accounts) => {
       });
     });
 
-    describe("addProposal function", function () {
+    describe("\n /**********/\nTest de addProposal function\n /**********/\n", function () {
       beforeEach(async function () {
-        await VotingInstance.addVoter(firstVoter, { from: owner });
-        await VotingInstance.addVoter(secondVoter, { from: owner });
-        await VotingInstance.addVoter(thirdVoter, { from: owner });
+        await VotingInstance.addVoter(Voter1, { from: owner });
+        await VotingInstance.addVoter(Voter2, { from: owner });
+        await VotingInstance.addVoter(Voter3, { from: owner });
         await VotingInstance.startProposalsRegistering({ from: owner });
       });
 
       it("the voters add proposals", async function () {
         await VotingInstance.addProposal("avoir une semaine de 4 jours", {
-          from: firstVoter,
+          from: Voter1,
         });
         const proposal = await VotingInstance.getOneProposal(1);
         expect(proposal.description).equal("avoir une semaine de 4 jours");
@@ -129,7 +129,7 @@ contract("Voting", (accounts) => {
       it("revert when caller is not a voter", async () => {
         await expectRevert(
           VotingInstance.addProposal("desc proposition 99", {
-            from: userNonVoter,
+            from: nonVoter,
           }),
           "You're not a voter"
         );
@@ -145,7 +145,7 @@ contract("Voting", (accounts) => {
 
       it("revert when description is empty", async () => {
         await expectRevert(
-          VotingInstance.addProposal("", { from: firstVoter }),
+          VotingInstance.addProposal("", { from: Voter1 }),
           "Vous ne pouvez pas ne rien proposer"
         );
       });
@@ -161,18 +161,18 @@ contract("Voting", (accounts) => {
         );
       });
 
-      describe("getOneProposal function", function () {
+      describe("\n /**********/\nTest de getOneProposal function\n /**********/\n", function () {
         it("revert when caller is not a voter", async () => {
           await expectRevert(
             VotingInstance.getOneProposal(0, {
-              from: userNonVoter,
+              from: nonVoter,
             }),
             "You're not a voter"
           );
         });
       });
 
-      describe("endProposalsRegistering function", function () {
+      describe("\n /**********/\nTest de endProposalsRegistering function\n /**********/\n", function () {
         it("change workflowStatus to ProposalsRegistrationEnded", async function () {
           await VotingInstance.endProposalsRegistering({ from: owner });
           const workflowStatus = await VotingInstance.workflowStatus.call();
@@ -182,7 +182,7 @@ contract("Voting", (accounts) => {
         // REVERT
         it("revert when caller is not the owner", async () => {
           await expectRevert(
-            VotingInstance.endProposalsRegistering({ from: firstVoter }),
+            VotingInstance.endProposalsRegistering({ from: Voter1 }),
             "Ownable: caller is not the owner"
           );
         });
@@ -207,7 +207,7 @@ contract("Voting", (accounts) => {
         });
       });
 
-      describe("startVotingSession function", function () {
+      describe("\n /**********/\nTest de startVotingSession function\n /**********/\n", function () {
         it("change workflowStatus to VotingSessionStarted", async function () {
           await VotingInstance.endProposalsRegistering({ from: owner });
           await VotingInstance.startVotingSession({ from: owner });
@@ -218,7 +218,7 @@ contract("Voting", (accounts) => {
         // REVERT
         it("revert when caller is not the owner", async () => {
           await expectRevert(
-            VotingInstance.startVotingSession({ from: firstVoter }),
+            VotingInstance.startVotingSession({ from: Voter1 }),
             "Ownable: caller is not the owner"
           );
         });
@@ -243,16 +243,16 @@ contract("Voting", (accounts) => {
         });
       });
 
-      describe("setVote function", function () {
+      describe("\n /**********/\nTest de setVote function\n /**********/\n", function () {
         beforeEach(async function () {
           await VotingInstance.addProposal("desc proposition 1", {
-            from: firstVoter,
+            from: Voter1,
           });
           await VotingInstance.addProposal("desc proposition 2", {
-            from: secondVoter,
+            from: Voter2,
           });
           await VotingInstance.addProposal("desc proposition 3", {
-            from: thirdVoter,
+            from: Voter3,
           });
           await VotingInstance.endProposalsRegistering({ from: owner });
           await VotingInstance.startVotingSession({ from: owner });
@@ -284,7 +284,7 @@ contract("Voting", (accounts) => {
         // REVERT
         it("revert when caller is not a voter", async () => {
           await expectRevert(
-            VotingInstance.setVote(1, { from: userNonVoter }),
+            VotingInstance.setVote(1, { from: nonVoter }),
             "You're not a voter"
           );
         });
@@ -323,7 +323,7 @@ contract("Voting", (accounts) => {
           );
         });
 
-        describe("endVotingSession function", function () {
+        describe("\n /**********/\nTest de endVotingSession function\n /**********/\n", function () {
           it("change workflowStatus to VotingSessionEnded", async function () {
             await VotingInstance.endVotingSession({ from: owner });
             const workflowStatus = await VotingInstance.workflowStatus.call();
@@ -333,7 +333,7 @@ contract("Voting", (accounts) => {
           // REVERT
           it("revert when caller is not the owner", async () => {
             await expectRevert(
-              VotingInstance.endVotingSession({ from: firstVoter }),
+              VotingInstance.endVotingSession({ from: Voter1 }),
               "Ownable: caller is not the owner"
             );
           });
@@ -358,12 +358,12 @@ contract("Voting", (accounts) => {
           });
         });
 
-        describe("tallyVotes function", function () {
+        describe("\n /**********/\nLast Test de tallyVotes function\n /**********/\n", function () {
           beforeEach(async function () {
             await VotingInstance.setVote(2, { from: owner });
-            await VotingInstance.setVote(1, { from: firstVoter });
-            await VotingInstance.setVote(2, { from: secondVoter });
-            await VotingInstance.setVote(3, { from: thirdVoter });
+            await VotingInstance.setVote(1, { from: Voter1 });
+            await VotingInstance.setVote(2, { from: Voter2 });
+            await VotingInstance.setVote(3, { from: Voter3 });
             await VotingInstance.endVotingSession({ from: owner });
           });
 
@@ -383,7 +383,7 @@ contract("Voting", (accounts) => {
           // REVERT
           it("revert when caller is not the owner", async () => {
             await expectRevert(
-              VotingInstance.tallyVotes({ from: firstVoter }),
+              VotingInstance.tallyVotes({ from: Voter1 }),
               "Ownable: caller is not the owner"
             );
           });
@@ -397,7 +397,7 @@ contract("Voting", (accounts) => {
           });
 
           // EVENT
-          it("emit a WorkflowStatusChange event", async () => {
+          it("GOOD Job CONGRATULATION --- emit a WorkflowStatusChange event", async () => {
             expectEvent(
               await VotingInstance.tallyVotes({
                 from: owner,
