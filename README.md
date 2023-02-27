@@ -42,10 +42,10 @@ $ truffle test test/Voting.test.js
 
 Test de la function addVoter
 
-![ETH Gas Reporter](img/output-test-reporter.png)
+![Reporter](img/output-test-reporter.png)
 
 ## Coverage
 
 Coverage measured with Hardhat and solidity-coverage
 
-![COVERAGE](img/coverage.png)
+![COVERAGE](img/output-test-reporter.png)
