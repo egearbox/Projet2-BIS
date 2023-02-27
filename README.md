@@ -2,8 +2,8 @@
 
 Le scénario de test a été construit chronologiquement afin de réutiliser au maximum toutes les données.
 
-Pour ce faire, `describe` est utilisé pour couvrir les fonctions suivantes dans le contrat intelligent :
-
+Couvrons les fonctions suivantes dans le contrat intelligent :
+## 8 functions
 - addVoter
 - addProposal
 - setVote
@@ -13,10 +13,11 @@ Pour ce faire, `describe` est utilisé pour couvrir les fonctions suivantes dans
 - endVotingSession
 - tallyVotes
 
-Dans chaque cas, les tests exécutent des cas où la fonction devrait fonctionner et vérifient les modifications dans le stockage. Les tests appellent également tous les modificateurs et nécessitent implémentés dans les fonctions ci-dessous.
+Dans chaque cas, la fonction devrait fonctionner et vérifier les modifications dans le stockage. Les tests appellent également tous les modificateurs implémentés dans les fonctions ci-dessous.
 expect() / expectRevert() / 
+"" ***************************
 Tous les événements émis dans le smart contract font l'objet de tests, qui incluent :
-
+## 4 events
 - VoterRegistered
 - WorkflowStatusChange
 - ProposalRegistered
@@ -38,18 +39,6 @@ Tous les événements émis dans le smart contract font l'objet de tests, qui in
           CONGRAT SUCCESS in =====>
       ✔ emit a VoterRegistered event 
           CONGRAT SUCCESS in =====> (59ms)
-### truffle a la console (cela sonne recette de cuisine, non ?)
-First, you have to run ganache in a separated console.// séparez un truc de la console remuez et votre ganache est prêted
-
-```console
-$  ganache-cli // or ganache
-```
-
-Then, you can use truffle to run the test located in the `/test` folder using
-
-```console
-$ truffle test // or truffle test test/Test_Voting.js
-```
 
 ## Premier Test
 
@@ -62,3 +51,26 @@ Test de la function addVoter
 Fin du test Voting.js
 
 ![Fin des tests 42 passés avec SUCCESS ](img/output-test-reporter-2.png)
+##Pour tester ce projet:
+git clone du projet2-Test-Voting.git
+npm init
+// si besoin $ npm install dotenv @truffle/hdwallet-provider @openzeppelin/test-helpers @openzeppelin/contracts
+truffle init
+truffle compile
+ganache // sinon pas de blockchain en locale 
+truffle deploy
+truffle migrate //all inclusively
+et voilou merci a vous....
+
+### truffle a la console (cela sonne recette de cuisine, non ?)
+First, you have to run ganache in a separated console.// séparez un truc de la console remuez et votre ganache est prêted
+
+```console
+$  ganache-cli // or ganache
+```
+
+Then, you can use truffle to run the test located in the `/test` folder using
+
+```console
+$ truffle test // or truffle test test/Test_Voting.js
+```
