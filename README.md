@@ -1,8 +1,9 @@
-## Mise en place et réalisation de test expect & revert 
+## Mise en place et réalisation de test expect & expectrevert & event / emit
 
 Le scénario de test a été construit chronologiquement afin de réutiliser au maximum toutes les données.
 
 Couvrons les fonctions suivantes dans le contrat intelligent :
+
 ## 8 functions
 - addVoter
 - addProposal
@@ -52,7 +53,7 @@ Fin du test Voting.js
 
 ![Fin des tests 42 passés avec SUCCESS ](img/output-test-reporter-2.png)
 ##Pour tester ce projet:
-git clone du projet2-Test-Voting.git
+git clone https://github.com/egearbox/Projet2-BIS.git
 npm init
 // si besoin $ npm install dotenv @truffle/hdwallet-provider @openzeppelin/test-helpers @openzeppelin/contracts
 truffle init
@@ -60,7 +61,7 @@ truffle compile
 ganache // sinon pas de blockchain en locale 
 truffle deploy
 truffle migrate //all inclusively
-et voilou merci a vous....
+et voilou un smart contract de vote test deployer avec des outils simple is the best ...merci a vous....
 
 ### truffle a la console (cela sonne recette de cuisine, non ?)
 First, you have to run ganache in a separated console.// séparez un truc de la console remuez et votre ganache est prêted
