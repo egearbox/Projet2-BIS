@@ -17,7 +17,7 @@ contract("\n /********************** Test de Voting.sol **********************/\
       await VotingInstance.addVoter(owner, { from: owner });
     });
 
-    it("the owner can register a voter \n          CONGRAT SUCCESS in =====>", async () => {
+    it("the owner can register a voter \n  expect(voter.isRegistered).to.equal(true); \n        CONGRAT SUCCESS in =====>", async () => {
       await VotingInstance.addVoter(Voter1, { from: owner });
       const voter = await VotingInstance.getVoter(Voter1);
       expect(voter.isRegistered).to.equal(true);
@@ -75,10 +75,10 @@ contract("\n /********************** Test de Voting.sol **********************/\
         expect(workflowStatus).to.be.bignumber.equal(new BN(1));
       });
 
-      it("add 'GENESIS' as first proposal", async function () {
+      it("add 'LA GENESE DE LA FIRST PROPOSAL' as first proposal", async function () {
         await VotingInstance.startProposalsRegistering({ from: owner });
         const firstProposal = await VotingInstance.getOneProposal(0);
-        expect(firstProposal.description).equal("GENESIS");
+        expect(firstProposal.description).equal("LA GENESE DE LA FIRST PROPOSAL");
       });
 
       // REVERT
