@@ -40,9 +40,9 @@ $ truffle test test/Voting.test.js
 
 ## Gas
 
-Gas usage measured with eth-gas-reporter
+Test de la function addVoter
 
-![ETH Gas Reporter](img/ethgasreporter.png)
+![ETH Gas Reporter](img/output-test-reporter.png)
 
 ## Coverage
 
