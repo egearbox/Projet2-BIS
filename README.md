@@ -2,7 +2,7 @@
 
 Le scénario de test a été construit chronologiquement afin de réutiliser au maximum toutes les données.
 
-Couvrons les fonctions suivantes dans le contrat intelligent :
+Couvrons les fonctions suivantes dans le contrat intelligent Voting.sol :
 
 ## 8 functions
 - addVoter
@@ -14,8 +14,30 @@ Couvrons les fonctions suivantes dans le contrat intelligent :
 - endVotingSession
 - tallyVotes
 
-Dans chaque cas, la fonction devrait fonctionner et vérifier les modifications dans le stockage. Les tests appellent également tous les modificateurs implémentés dans les fonctions ci-dessous.
+"" ***************************
 expect() / expectRevert() / 
+"" ***************************
+
+Dans chaque cas, la fonction doit fonctionner on s'attend en sortie que (voter.isRegistered).to.equal(true):
+//What did'n you Except ? 
+it("the owner can register a voter \n  expect(voter.isRegistered).to.equal(true); \n        CONGRAT SUCCESS in =====>", async () => {
+      await VotingInstance.addVoter(Voter1, { from: owner });
+      const voter = await VotingInstance.getVoter(Voter1);
+      expect(voter.isRegistered).to.equal(true);
+    });
+   En sortie:     CONGRAT SUCCESS in =====> (73ms)
+
+Vérifier une sortie controler par l'appel de  function addVoter(address _addr) external onlyOwner {
+"Ownable: caller is not the owner" implémentés dans la fonction du contract Ownable.sol de @openzeppelin \n
+return _owner;\n    }\n\n    /**\n     * @dev Throws if the sender is not the owner.\n     */\n    function _checkOwner() internal view virtual {\n        require(owner() == _msgSender(), \"Ownable: caller is not the owner\");\n    }\n\n    /**\n 
+
+// REVERT
+    it("revert when caller is not the owner \n          CONGRAT SUCCESS in =====>", async () => {
+      await expectRevert(
+        VotingInstance.addVoter(Voter2, { from: Voter1 }),
+        "Ownable: caller is not the owner"
+      );
+
 "" ***************************
 Tous les événements émis dans le smart contract font l'objet de tests, qui incluent :
 ## 4 events
